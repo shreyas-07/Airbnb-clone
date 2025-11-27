@@ -14,19 +14,22 @@ if [[ -f "$ENV_FILE" ]]; then
   # Export MongoDB URI
   if grep -q "^MONGO_SESSION_URI=" "$ENV_FILE"; then
     export TF_VAR_mongo_session_uri=$(grep "^MONGO_SESSION_URI=" "$ENV_FILE" | cut -d '=' -f2- | tr -d '"' | tr -d "'")
-    echo "✓ Loaded TF_VAR_mongo_session_uri"
+    echo "OK Loaded TF_VAR_mongo_session_uri"
   fi
   
-  # Export Supabase URL
+  # Export Supabase URL (check both SUPABASE_POSTGRES_URL and DATABASE_URL)
   if grep -q "^SUPABASE_POSTGRES_URL=" "$ENV_FILE"; then
     export TF_VAR_supabase_postgres_url=$(grep "^SUPABASE_POSTGRES_URL=" "$ENV_FILE" | cut -d '=' -f2- | tr -d '"' | tr -d "'")
-    echo "✓ Loaded TF_VAR_supabase_postgres_url"
+    echo "OK Loaded TF_VAR_supabase_postgres_url from SUPABASE_POSTGRES_URL"
+  elif grep -q "^DATABASE_URL=" "$ENV_FILE"; then
+    export TF_VAR_supabase_postgres_url=$(grep "^DATABASE_URL=" "$ENV_FILE" | cut -d '=' -f2- | tr -d '"' | tr -d "'")
+    echo "OK Loaded TF_VAR_supabase_postgres_url from DATABASE_URL"
   fi
   
   # Export Session Secret
   if grep -q "^SESSION_SECRET=" "$ENV_FILE"; then
     export TF_VAR_session_secret=$(grep "^SESSION_SECRET=" "$ENV_FILE" | cut -d '=' -f2- | tr -d '"' | tr -d "'")
-    echo "✓ Loaded TF_VAR_session_secret"
+    echo "OK Loaded TF_VAR_session_secret"
   fi
 else
   echo "WARNING: Backend .env file not found at $ENV_FILE"
@@ -41,9 +44,9 @@ echo ""
 echo "Verifying AWS credentials..."
 if aws sts get-caller-identity &>/dev/null; then
   ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-  echo "✓ AWS Account: $ACCOUNT_ID"
+  echo "OK AWS Account: $ACCOUNT_ID"
 else
-  echo "✗ AWS credentials not configured. Run 'aws configure' first."
+  echo "ERROR AWS credentials not configured. Run 'aws configure' first."
   return 1
 fi
 

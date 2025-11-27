@@ -1,9 +1,9 @@
 # AWS Terraform Quick Start Guide
 
 ## Account Information
-- **AWS Account ID**: 779926948199
-- **Region**: us-east-1
-- **VPC**: vpc-0601227af31a9b901
+- **AWS Account ID**: YOUR_AWS_ACCOUNT_ID (replace with your AWS account ID)
+- **Region**: us-east-1 (or your preferred region)
+- **VPC**: YOUR_VPC_ID (replace with your VPC ID)
 
 ## Prerequisites ✓
 - [x] Terraform installed (v1.13.5)

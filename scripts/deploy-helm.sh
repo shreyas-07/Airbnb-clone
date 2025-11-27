@@ -48,8 +48,13 @@ aws ecr get-login-password --region us-east-1 | docker login --username AWS --pa
 if ! kubectl get namespace airbnb-app &> /dev/null; then
   echo -e "${YELLOW}Creating namespace airbnb-app with Helm labels...${NC}"
   kubectl create namespace airbnb-app
-  kubectl label namespace airbnb-app app.kubernetes.io/managed-by=Helm
-  kubectl annotate namespace airbnb-app meta.helm.sh/release-name=airbnb meta.helm.sh/release-namespace=airbnb-app
+fi
+
+# Add Helm labels/annotations if missing (for namespaces created by Terraform)
+if ! kubectl get namespace airbnb-app -o jsonpath='{.metadata.labels.app\.kubernetes\.io/managed-by}' 2>/dev/null | grep -q Helm; then
+  echo -e "${YELLOW}Adding Helm labels to namespace airbnb-app...${NC}"
+  kubectl label namespace airbnb-app app.kubernetes.io/managed-by=Helm --overwrite
+  kubectl annotate namespace airbnb-app meta.helm.sh/release-name=airbnb meta.helm.sh/release-namespace=airbnb-app --overwrite
 fi
 
 # Install/Upgrade the Helm release

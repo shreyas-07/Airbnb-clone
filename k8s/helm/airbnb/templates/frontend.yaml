@@ -43,7 +43,7 @@ metadata:
   name: {{ .Values.frontend.name }}
   namespace: {{ .Values.global.namespace }}
   annotations:
-    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:us-east-1:779926948199:certificate/765053e3-0a3a-48da-b060-ccd639c88477"
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:us-east-1:YOUR_AWS_ACCOUNT_ID:certificate/YOUR_CERTIFICATE_ID"  # Replace with your ACM certificate ARN
     service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
     service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
 spec:

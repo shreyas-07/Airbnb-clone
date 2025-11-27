@@ -51,6 +51,12 @@ export default function FirebaseImage({
           setLoading(false);
           errorCallbackRef.current(err);
           console.error(`Failed to load image from path: ${path}`, err);
+          console.error('Error details:', {
+            code: err.code,
+            message: err.message,
+            serverResponse: err.serverResponse,
+            path: path
+          });
         }
       }
     };

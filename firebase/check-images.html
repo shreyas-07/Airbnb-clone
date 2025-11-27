@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Storage Image Checker</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+</head>
+<body>
+    <h1>Firebase Storage Image Checker</h1>
+    <p>Open browser console to see results</p>
+    <div id="results"></div>
+    
+    <script>
+        // Replace with your Firebase config
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "firegram-1r",
+            storageBucket: "firegram-1r.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const storage = firebase.storage();
+        
+        const images = [
+            'landing/highlights/standout-stays.jpg',
+            'landing/highlights/effortless-hosting.jpg',
+            'landing/highlights/traveler-delights.jpg',
+            'landing/owner-features/calendar-sync.jpg',
+            'landing/owner-features/automated-updates.jpg',
+            'landing/owner-features/performance-insights.jpg'
+        ];
+        
+        async function checkImages() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<h2>Checking images...</h2>';
+            
+            for (const path of images) {
+                try {
+                    const ref = storage.ref(path);
+                    const url = await ref.getDownloadURL();
+                    console.log(`OK: ${path} - ${url}`);
+                    results.innerHTML += `<p style="color: green;">OK: ${path}</p>`;
+                } catch (error) {
+                    console.error(`FAILED: ${path} - ${error.code}: ${error.message}`);
+                    results.innerHTML += `<p style="color: red;">FAILED: ${path} - ${error.code}: ${error.message}</p>`;
+                }
+            }
+        }
+        
+        checkImages();
+    </script>
+</body>
+</html>
+
+
+

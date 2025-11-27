@@ -15,3 +15,11 @@ tfplan
 
 # Automatically generated variable files
 *.auto.tfvars
+
+# Environment files with sensitive data
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+agent-service/.env

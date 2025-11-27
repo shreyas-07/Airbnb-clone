@@ -78,10 +78,14 @@ echo ""
 cd "${PROJECT_ROOT}/aws"
 
 # Source environment variables
+echo -e "${YELLOW}Loading environment variables...${NC}"
 if [ -f "setup-env.sh" ]; then
-  echo -e "${YELLOW}Loading environment variables...${NC}"
-  export TF_VAR_supabase_postgres_url="dummy"
+  set +u  # Temporarily allow unset variables
   source setup-env.sh
+  set -u
+else
+  echo -e "${RED}ERROR: setup-env.sh not found${NC}"
+  exit 1
 fi
 
 echo -e "${YELLOW}Running terraform destroy...${NC}"
@@ -102,6 +106,14 @@ echo ""
 
 echo -e "${YELLOW}Configuring network...${NC}"
 bash "${PROJECT_ROOT}/aws/scripts/configure-network.sh"
+
+# Source environment variables again for apply
+echo -e "${YELLOW}Loading environment variables...${NC}"
+if [ -f "setup-env.sh" ]; then
+  set +u  # Temporarily allow unset variables
+  source setup-env.sh
+  set -u
+fi
 
 echo -e "${YELLOW}Running terraform apply...${NC}"
 terraform apply \

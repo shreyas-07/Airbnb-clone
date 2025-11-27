@@ -1,0 +1,14 @@
+# Terraform variables for AWS deployment
+# Copy this file to terraform.tfvars and fill in your values
+# Sensitive values should be set via environment variables:
+# export TF_VAR_mongo_session_uri="..."
+# export TF_VAR_supabase_postgres_url="..."
+# export TF_VAR_session_secret="..."
+
+project_name = "airbnb"
+environment  = "lab2"
+cluster_name = "airbnb-lab2-cluster"
+
+# Network configuration is auto-generated in network.auto.tfvars
+# by running: bash aws/scripts/configure-network.sh
+
